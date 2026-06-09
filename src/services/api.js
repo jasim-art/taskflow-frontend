@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL:
+    "https://taskflow-backend-fz9a.onrender.com/api"
 });
 
 export default api;
