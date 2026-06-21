@@ -1,3 +1,4 @@
+
 import { FaBell } from "react-icons/fa";
 import {
   useContext,
@@ -90,10 +91,17 @@ function Navbar({
             bg-slate-100
             p-3
             rounded-xl
+            hover:bg-slate-200
+            transition
           "
         >
 
-          <FaBell className="text-xl" />
+          <FaBell
+            className="
+              text-slate-700
+              text-xl
+            "
+          />
 
           {notifications.length > 0 && (
 
@@ -127,25 +135,36 @@ function Navbar({
         <div
           className="
             absolute
-            right-4
-            top-24
+            right-2
             md:right-8
-            w-72
+            top-full
+            mt-2
+            w-[90vw]
+            max-w-sm
             bg-white
             shadow-xl
             rounded-2xl
             p-4
             z-50
+            border
           "
         >
 
-          <h3 className="font-bold mb-4">
+          <h3
+            className="
+              font-bold
+              text-lg
+              mb-4
+            "
+          >
             Notifications
           </h3>
 
           {notifications.length === 0 ? (
 
-            <p>No notifications</p>
+            <p className="text-gray-500">
+              No notifications
+            </p>
 
           ) : (
 
@@ -156,6 +175,7 @@ function Navbar({
                 className="
                   border-b
                   py-3
+                  last:border-none
                 "
               >
 
@@ -163,7 +183,7 @@ function Navbar({
                   {item.message}
                 </p>
 
-                <small>
+                <small className="text-gray-500">
                   {item.time}
                 </small>
 
@@ -184,3 +204,4 @@ function Navbar({
 }
 
 export default Navbar;
+
