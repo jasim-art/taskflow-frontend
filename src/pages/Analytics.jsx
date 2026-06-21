@@ -21,67 +21,65 @@ function Analytics() {
 
   const loadStats = async () => {
 
-    try {
+  try {
 
-      const email =
-        localStorage.getItem("email");
+    const email =
+      localStorage.getItem("email");
 
-      const response =
-        await api.get(
-          `/tasks?email=${email}`
-        );
-
-      const tasks =
-        response.data || [];
-
-      setStats({
-
-        total:
-          tasks.length,
-
-        completed:
-          tasks.filter(
-            task =>
-              task.status ===
-              "Completed"
-          ).length,
-
-        pending:
-          tasks.filter(
-            task =>
-              task.status ===
-              "Pending"
-          ).length,
-
-        inProgress:
-          tasks.filter(
-            task =>
-              task.status ===
-              "In Progress"
-          ).length
-
-      });
-
-    } catch (error) {
-
-      console.error(
-        "Analytics Error:",
-        error
+    const response =
+      await api.get(
+        `/tasks?email=${email}`
       );
 
-    }
+    const tasks =
+      response.data || [];
 
-  };
+    console.log(
+      "Analytics Tasks:",
+      tasks
+    );
 
-  const completionRate =
-    stats.total === 0
-      ? 0
-      : Math.round(
-          (stats.completed /
-            stats.total) *
-            100
-        );
+    setStats({
 
+      total:
+        tasks.length,
+
+      completed:
+        tasks.filter(
+          task =>
+            task.status
+              ?.toLowerCase() ===
+            "completed"
+        ).length,
+
+      pending:
+        tasks.filter(
+          task =>
+            task.status
+              ?.toLowerCase() ===
+            "pending"
+        ).length,
+
+      inProgress:
+        tasks.filter(
+          task =>
+            task.status
+              ?.toLowerCase() ===
+            "in progress"
+        ).length
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Analytics Error:",
+      error
+    );
+
+  }
+
+};
   return (
 
     <div className="flex min-h-screen bg-slate-100">
