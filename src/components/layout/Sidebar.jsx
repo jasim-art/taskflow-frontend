@@ -1,41 +1,29 @@
 import { Link } from "react-router-dom";
-import {
-  useContext
-} from "react";
 
-import {
-  useNavigate
-} from "react-router-dom";
-
-import {
-  AuthContext
-} from "../../context/AuthContext";
 function Sidebar() {
-  const navigate =
-  useNavigate();
-
-const { logout } =
-  useContext(
-    AuthContext
-  );
-
-const handleLogout =
-  () => {
-
-    logout();
-
-    navigate(
-      "/login"
-    );
-
-  };
 
   return (
-    
 
-    <div className="w-64 bg-slate-950 text-white">
+    <div
+      className="
+        hidden
+        md:flex
+        w-64
+        bg-slate-950
+        text-white
+        flex-col
+      "
+    >
 
-      <div className="p-6 text-3xl font-bold border-b border-slate-800">
+      <div
+        className="
+          p-6
+          text-3xl
+          font-bold
+          border-b
+          border-slate-800
+        "
+      >
         TaskFlow
       </div>
 
@@ -74,6 +62,7 @@ const handleLogout =
     </div>
 
   );
+
 }
 
 export default Sidebar;

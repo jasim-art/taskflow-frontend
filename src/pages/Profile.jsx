@@ -147,7 +147,7 @@ function Profile() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+   <div className="flex min-h-screen bg-slate-100 overflow-x-hidden">
 
       <Sidebar />
 
@@ -155,25 +155,24 @@ function Profile() {
 
         <Navbar />
 
-        <div className="p-8">
-
-          <h1 className="text-5xl font-bold mb-8">
+       <div className="p-4 md:p-8">
+        <h1 className="text-5xl font-bold mb-8">
             My Profile
           </h1>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {/* Avatar Card */}
 
-            <div className="bg-white rounded-3xl shadow p-10 flex flex-col items-center">
+            <div className="bg-white rounded-3xl shadow p-6 md:p-10 flex flex-col items-center">
 
-              <div className="w-40 h-40 rounded-full bg-slate-950 text-white flex items-center justify-center text-6xl font-bold mb-6">
+            <div className="w-28 h-28 md:w-40 md:h-40 rounded-full bg-slate-950 text-white flex items-center justify-center text-4xl md:text-6xl font-bold mb-6">
                 {user.name
                   ?.substring(0, 2)
                   .toUpperCase()}
               </div>
 
-              <h2 className="text-4xl font-bold">
+      <h2 className="text-2xl md:text-4xl font-bold text-center">
                 {user.name}
               </h2>
 
@@ -185,13 +184,13 @@ function Profile() {
 
             {/* Info Card */}
 
-            <div className="lg:col-span-2 bg-white rounded-3xl shadow p-8">
+            <div className="lg:col-span-2 bg-white rounded-3xl shadow p-4 md:p-8">
 
-              <h2 className="text-3xl font-bold mb-8">
+      <h2 className="text-2xl md:text-3xl font-bold mb-8">
                 Account Information
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
@@ -281,12 +280,12 @@ function Profile() {
 
               </div>
 
-              <div className="flex gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
 
                 {editMode ? (
                   <button
                     onClick={handleSave}
-                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
                     <FaSave />
                     Save Changes

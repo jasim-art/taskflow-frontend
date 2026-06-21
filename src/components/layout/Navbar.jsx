@@ -23,13 +23,43 @@ function Navbar({
 
   return (
 
-    <div className="bg-white border-b h-24 px-8 flex items-center justify-between relative">
+    <div
+      className="
+        bg-white
+        border-b
+        px-4
+        md:px-8
+        py-4
+        flex
+        flex-col
+        md:flex-row
+        md:items-center
+        md:justify-between
+        gap-4
+        relative
+      "
+    >
 
-      <h1 className="text-4xl font-bold text-slate-900">
+      <h1
+        className="
+          text-2xl
+          md:text-4xl
+          font-bold
+          text-slate-900
+        "
+      >
         TaskFlow
       </h1>
 
-      <div className="flex items-center gap-6">
+      <div
+        className="
+          flex
+          items-center
+          gap-4
+          w-full
+          md:w-auto
+        "
+      >
 
         {showSearch && (
 
@@ -39,9 +69,10 @@ function Navbar({
             className="
               border
               rounded-xl
-              px-5
+              px-4
               py-3
-              w-72
+              w-full
+              md:w-72
               outline-none
               focus:ring-2
               focus:ring-slate-900
@@ -59,16 +90,10 @@ function Navbar({
             bg-slate-100
             p-3
             rounded-xl
-            hover:bg-slate-200
           "
         >
 
-          <FaBell
-            className="
-              text-slate-700
-              text-xl
-            "
-          />
+          <FaBell className="text-xl" />
 
           {notifications.length > 0 && (
 
@@ -102,9 +127,10 @@ function Navbar({
         <div
           className="
             absolute
-            right-8
-            top-20
-            w-80
+            right-4
+            top-24
+            md:right-8
+            w-72
             bg-white
             shadow-xl
             rounded-2xl
@@ -113,41 +139,37 @@ function Navbar({
           "
         >
 
-          <h3 className="font-bold text-lg mb-4">
+          <h3 className="font-bold mb-4">
             Notifications
           </h3>
 
           {notifications.length === 0 ? (
 
-            <p className="text-gray-500">
-              No notifications
-            </p>
+            <p>No notifications</p>
 
           ) : (
 
-            notifications.map(
-              item => (
+            notifications.map(item => (
 
-                <div
-                  key={item.id}
-                  className="
-                    border-b
-                    py-3
-                  "
-                >
+              <div
+                key={item.id}
+                className="
+                  border-b
+                  py-3
+                "
+              >
 
-                  <p>
-                    {item.message}
-                  </p>
+                <p>
+                  {item.message}
+                </p>
 
-                  <small className="text-gray-500">
-                    {item.time}
-                  </small>
+                <small>
+                  {item.time}
+                </small>
 
-                </div>
+              </div>
 
-              )
-            )
+            ))
 
           )}
 
@@ -158,6 +180,7 @@ function Navbar({
     </div>
 
   );
+
 }
 
 export default Navbar;
