@@ -23,18 +23,54 @@ function Analytics() {
 
     try {
 
+      const email =
+        localStorage.getItem("email");
+
       const response =
         await api.get(
-          "/tasks/stats"
+          `/tasks?email=${email}`
         );
 
-      setStats(response.data);
+      const tasks =
+        response.data || [];
+
+      setStats({
+
+        total:
+          tasks.length,
+
+        completed:
+          tasks.filter(
+            task =>
+              task.status ===
+              "Completed"
+          ).length,
+
+        pending:
+          tasks.filter(
+            task =>
+              task.status ===
+              "Pending"
+          ).length,
+
+        inProgress:
+          tasks.filter(
+            task =>
+              task.status ===
+              "In Progress"
+          ).length
+
+      });
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Analytics Error:",
+        error
+      );
 
     }
+
   };
 
   const completionRate =
@@ -42,12 +78,13 @@ function Analytics() {
       ? 0
       : Math.round(
           (stats.completed /
-            stats.total) * 100
+            stats.total) *
+            100
         );
 
   return (
 
-    <div className="flex h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-slate-100">
 
       <Sidebar />
 
@@ -55,74 +92,70 @@ function Analytics() {
 
         <Navbar />
 
-        <div className="p-8 space-y-8">
+        <div className="p-4 md:p-8 space-y-8">
 
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold">
             Analytics
           </h1>
 
-          {/* Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-4 md:p-6 rounded-2xl shadow">
               <h3 className="text-gray-500">
                 Total Tasks
               </h3>
 
-              <p className="text-5xl font-bold mt-3">
+              <p className="text-3xl md:text-5xl font-bold mt-3">
                 {stats.total}
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-4 md:p-6 rounded-2xl shadow">
               <h3 className="text-gray-500">
                 Completed
               </h3>
 
-              <p className="text-5xl font-bold text-green-600 mt-3">
+              <p className="text-3xl md:text-5xl font-bold text-green-600 mt-3">
                 {stats.completed}
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-4 md:p-6 rounded-2xl shadow">
               <h3 className="text-gray-500">
                 Pending
               </h3>
 
-              <p className="text-5xl font-bold text-yellow-500 mt-3">
+              <p className="text-3xl md:text-5xl font-bold text-yellow-500 mt-3">
                 {stats.pending}
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-4 md:p-6 rounded-2xl shadow">
               <h3 className="text-gray-500">
                 In Progress
               </h3>
 
-              <p className="text-5xl font-bold text-blue-600 mt-3">
+              <p className="text-3xl md:text-5xl font-bold text-blue-600 mt-3">
                 {stats.inProgress}
               </p>
             </div>
 
           </div>
 
-          {/* Completion Rate */}
+          <div className="bg-white p-4 md:p-6 rounded-2xl shadow">
 
-          <div className="bg-white p-6 rounded-2xl shadow">
-
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-xl md:text-2xl font-bold mb-4">
               Completion Rate
             </h2>
 
-            <p className="text-6xl font-bold text-green-600">
+            <p className="text-4xl md:text-6xl font-bold text-green-600">
               {completionRate}%
             </p>
 
-            <div className="w-full bg-gray-200 rounded-full h-5 mt-6">
+            <div className="w-full bg-gray-200 rounded-full h-4 md:h-5 mt-6">
 
               <div
-                className="bg-green-500 h-5 rounded-full transition-all duration-500"
+                className="bg-green-500 h-4 md:h-5 rounded-full transition-all duration-500"
                 style={{
                   width: `${completionRate}%`
                 }}
@@ -131,8 +164,6 @@ function Analytics() {
             </div>
 
           </div>
-
-          {/* Pie Chart */}
 
           <TaskChart
             stats={stats}
@@ -145,6 +176,7 @@ function Analytics() {
     </div>
 
   );
+
 }
 
 export default Analytics;
