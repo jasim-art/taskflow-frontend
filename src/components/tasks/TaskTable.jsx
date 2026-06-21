@@ -41,9 +41,7 @@ function TaskTable() {
   );
 
   useEffect(() => {
-
     loadTasks();
-
   }, []);
 
   const loadTasks =
@@ -131,9 +129,7 @@ function TaskTable() {
           "Delete this task?"
         );
 
-      if (
-        !confirmDelete
-      )
+      if (!confirmDelete)
         return;
 
       try {
@@ -166,8 +162,7 @@ function TaskTable() {
             );
 
         const matchesStatus =
-          statusFilter ===
-          "All"
+          statusFilter === "All"
             ? true
             : task.status ===
               statusFilter;
@@ -183,9 +178,7 @@ function TaskTable() {
   const getStatusColor =
     status => {
 
-      switch (
-        status
-      ) {
+      switch (status) {
 
         case "Completed":
           return "bg-green-100 text-green-700";
@@ -198,15 +191,15 @@ function TaskTable() {
 
         default:
           return "bg-gray-100 text-gray-700";
+
       }
+
     };
 
   const getPriorityColor =
     priority => {
 
-      switch (
-        priority
-      ) {
+      switch (priority) {
 
         case "High":
           return "bg-red-100 text-red-700";
@@ -219,17 +212,20 @@ function TaskTable() {
 
         default:
           return "bg-gray-100 text-gray-700";
+
       }
+
     };
 
   return (
 
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-6">
+
+      <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6">
 
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
 
-          <div className="flex gap-3 flex-wrap">
+          <div className="flex flex-col sm:flex-row gap-3">
 
             <input
               type="text"
@@ -240,7 +236,7 @@ function TaskTable() {
                   e.target.value
                 )
               }
-              className="border px-4 py-2 rounded-lg"
+              className="border px-4 py-2 rounded-lg w-full sm:w-auto"
             />
 
             <select
@@ -279,16 +275,18 @@ function TaskTable() {
                 true
               )
             }
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow w-full md:w-auto"
           >
             + Create Task
           </button>
 
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop Table */}
 
-          <table className="w-full">
+        <div className="hidden md:block overflow-x-auto">
+
+          <table className="w-full min-w-[900px]">
 
             <thead>
 
@@ -324,96 +322,79 @@ function TaskTable() {
 
             <tbody>
 
-              {filteredTasks.length === 0 ? (
+              {filteredTasks.map(
+                task => (
 
-                <tr>
-
-                  <td
-                    colSpan="6"
-                    className="text-center py-8 text-gray-500"
+                  <tr
+                    key={task.id}
+                    className="border-b hover:bg-slate-50"
                   >
-                    No tasks found
-                  </td>
 
-                </tr>
+                    <td className="py-4">
+                      {task.title}
+                    </td>
 
-              ) : (
+                    <td className="py-4">
+                      {task.description}
+                    </td>
 
-                filteredTasks.map(
-                  task => (
+                    <td className="py-4">
 
-                    <tr
-                      key={task.id}
-                      className="border-b hover:bg-slate-50"
-                    >
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm ${getStatusColor(task.status)}`}
+                      >
+                        {task.status}
+                      </span>
 
-                      <td className="py-4 font-medium">
-                        {task.title}
-                      </td>
+                    </td>
 
-                      <td className="py-4">
-                        {task.description}
-                      </td>
+                    <td className="py-4">
 
-                      <td className="py-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm ${getPriorityColor(task.priority)}`}
+                      >
+                        {task.priority}
+                      </span>
 
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm ${getStatusColor(task.status)}`}
+                    </td>
+
+                    <td className="py-4">
+                      {task.dueDate}
+                    </td>
+
+                    <td className="py-4">
+
+                      <div className="flex gap-2">
+
+                        <button
+                          onClick={() =>
+                            setSelectedTask(
+                              task
+                            )
+                          }
+                          className="bg-green-500 text-white px-3 py-1 rounded-lg"
                         >
-                          {task.status}
-                        </span>
+                          Edit
+                        </button>
 
-                      </td>
-
-                      <td className="py-4">
-
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm ${getPriorityColor(task.priority)}`}
+                        <button
+                          onClick={() =>
+                            deleteTask(
+                              task.id
+                            )
+                          }
+                          className="bg-red-500 text-white px-3 py-1 rounded-lg"
                         >
-                          {task.priority}
-                        </span>
+                          Delete
+                        </button>
 
-                      </td>
+                      </div>
 
-                      <td className="py-4">
-                        {task.dueDate}
-                      </td>
+                    </td>
 
-                      <td className="py-4">
+                  </tr>
 
-                        <div className="flex gap-2">
-
-                          <button
-                            onClick={() =>
-                              setSelectedTask(
-                                task
-                              )
-                            }
-                            className="bg-green-500 text-white px-3 py-1 rounded-lg"
-                          >
-                            Edit
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              deleteTask(
-                                task.id
-                              )
-                            }
-                            className="bg-red-500 text-white px-3 py-1 rounded-lg"
-                          >
-                            Delete
-                          </button>
-
-                        </div>
-
-                      </td>
-
-                    </tr>
-
-                  )
                 )
-
               )}
 
             </tbody>
@@ -422,14 +403,95 @@ function TaskTable() {
 
         </div>
 
+        {/* Mobile Cards */}
+
+        <div className="md:hidden space-y-4">
+
+          {filteredTasks.length === 0 ? (
+
+            <div className="text-center py-10 text-gray-500">
+              No tasks found
+            </div>
+
+          ) : (
+
+            filteredTasks.map(
+              task => (
+
+                <div
+                  key={task.id}
+                  className="border rounded-xl p-4 bg-slate-50"
+                >
+
+                  <h3 className="font-bold text-lg mb-2">
+                    {task.title}
+                  </h3>
+
+                  <p className="text-gray-600 mb-3">
+                    {task.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-3">
+
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm ${getStatusColor(task.status)}`}
+                    >
+                      {task.status}
+                    </span>
+
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm ${getPriorityColor(task.priority)}`}
+                    >
+                      {task.priority}
+                    </span>
+
+                  </div>
+
+                  <p className="text-sm text-gray-500 mb-4">
+                    Due: {task.dueDate}
+                  </p>
+
+                  <div className="flex gap-2">
+
+                    <button
+                      onClick={() =>
+                        setSelectedTask(
+                          task
+                        )
+                      }
+                      className="flex-1 bg-green-500 text-white py-2 rounded-lg"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        deleteTask(
+                          task.id
+                        )
+                      }
+                      className="flex-1 bg-red-500 text-white py-2 rounded-lg"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </div>
+
+              )
+            )
+
+          )}
+
+        </div>
+
       </div>
 
       {showCreateModal && (
 
         <CreateTaskModal
-          refreshTasks={
-            loadTasks
-          }
+          refreshTasks={loadTasks}
           onClose={() =>
             setShowCreateModal(
               false
@@ -443,9 +505,7 @@ function TaskTable() {
 
         <EditTaskModal
           task={selectedTask}
-          refreshTasks={
-            loadTasks
-          }
+          refreshTasks={loadTasks}
           onClose={() =>
             setSelectedTask(
               null
@@ -456,6 +516,7 @@ function TaskTable() {
       )}
 
     </>
+
   );
 
 }

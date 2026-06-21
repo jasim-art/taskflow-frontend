@@ -5,7 +5,6 @@ function CreateTaskModal({
   refreshTasks,
   onClose
 }) {
-
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -15,25 +14,18 @@ function CreateTaskModal({
   });
 
   const handleChange = (e) => {
-
     setTask({
       ...task,
-      [e.target.name]:
-        e.target.value
+      [e.target.name]: e.target.value
     });
-
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
-
       const email =
-        localStorage.getItem(
-          "email"
-        );
+        localStorage.getItem("email");
 
       await api.post(
         `/tasks?email=${email}`,
@@ -41,32 +33,22 @@ function CreateTaskModal({
       );
 
       refreshTasks();
-
       onClose();
 
     } catch (error) {
-
-      console.error(
-        error
-      );
-
-      alert(
-        "Failed to create task"
-      );
-
+      console.error(error);
+      alert("Failed to create task");
     }
-
   };
 
   return (
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 px-4">
 
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-
-      <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl p-8">
+      <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl p-5 md:p-8 max-h-[90vh] overflow-y-auto">
 
         <div className="flex justify-between items-center mb-6">
 
-          <h2 className="text-4xl font-bold">
+          <h2 className="text-2xl md:text-4xl font-bold">
             Create Task
           </h2>
 
@@ -91,7 +73,7 @@ function CreateTaskModal({
             value={task.title}
             onChange={handleChange}
             required
-            className="w-full border rounded-xl px-5 py-4"
+            className="w-full border rounded-xl px-4 py-3"
           />
 
           <textarea
@@ -101,16 +83,15 @@ function CreateTaskModal({
             onChange={handleChange}
             rows="4"
             required
-            className="w-full border rounded-xl px-5 py-4"
+            className="w-full border rounded-xl px-4 py-3"
           />
 
           <select
             name="status"
             value={task.status}
             onChange={handleChange}
-            className="w-full border rounded-xl px-5 py-4"
+            className="w-full border rounded-xl px-4 py-3"
           >
-
             <option value="Pending">
               Pending
             </option>
@@ -122,16 +103,14 @@ function CreateTaskModal({
             <option value="Completed">
               Completed
             </option>
-
           </select>
 
           <select
             name="priority"
             value={task.priority}
             onChange={handleChange}
-            className="w-full border rounded-xl px-5 py-4"
+            className="w-full border rounded-xl px-4 py-3"
           >
-
             <option value="Low">
               Low
             </option>
@@ -143,7 +122,6 @@ function CreateTaskModal({
             <option value="High">
               High
             </option>
-
           </select>
 
           <input
@@ -152,10 +130,10 @@ function CreateTaskModal({
             value={task.dueDate}
             onChange={handleChange}
             required
-            className="w-full border rounded-xl px-5 py-4"
+            className="w-full border rounded-xl px-4 py-3"
           />
 
-          <div className="flex justify-end gap-4 pt-3">
+          <div className="flex flex-col sm:flex-row justify-end gap-3">
 
             <button
               type="button"
@@ -179,9 +157,7 @@ function CreateTaskModal({
       </div>
 
     </div>
-
   );
-
 }
 
 export default CreateTaskModal;

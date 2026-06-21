@@ -1,3 +1,4 @@
+
 import {
   PieChart,
   Pie,
@@ -38,55 +39,73 @@ function TaskChart({
 
   return (
 
-    <div className="bg-white rounded-2xl shadow p-6">
+    <div className="bg-white rounded-2xl shadow p-4 md:p-6">
 
-      <h2 className="text-2xl font-bold mb-6">
+      <h2
+        className="
+          text-xl
+          md:text-2xl
+          font-bold
+          mb-6
+        "
+      >
         Task Distribution
       </h2>
 
-      <ResponsiveContainer
-        width="100%"
-        height={350}
-      >
+      <div className="w-full h-[280px] md:h-[350px]">
 
-        <PieChart>
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
 
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            outerRadius={120}
-            dataKey="value"
-            label
-          >
+          <PieChart>
 
-            {data.map(
-              (entry, index) => (
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              outerRadius="65%"
+              dataKey="value"
+              label
+            >
 
-                <Cell
-                  key={index}
-                  fill={
-                    COLORS[index %
-                    COLORS.length]
-                  }
-                />
+              {data.map(
+                (entry, index) => (
 
-              )
-            )}
+                  <Cell
+                    key={index}
+                    fill={
+                      COLORS[
+                        index %
+                        COLORS.length
+                      ]
+                    }
+                  />
 
-          </Pie>
+                )
+              )}
 
-          <Tooltip />
+            </Pie>
 
-          <Legend />
+            <Tooltip />
 
-        </PieChart>
+            <Legend
+              verticalAlign="bottom"
+              height={36}
+            />
 
-      </ResponsiveContainer>
+          </PieChart>
+
+        </ResponsiveContainer>
+
+      </div>
 
     </div>
 
   );
+
 }
 
 export default TaskChart;
+

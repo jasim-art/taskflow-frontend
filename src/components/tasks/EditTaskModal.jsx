@@ -17,7 +17,6 @@ function EditTaskModal({
     useState(task.status);
 
   const handleUpdate = async (e) => {
-
     e.preventDefault();
 
     try {
@@ -32,23 +31,19 @@ function EditTaskModal({
       );
 
       refreshTasks();
-
       onClose();
 
     } catch (error) {
-
       console.error(error);
-
     }
   };
 
   return (
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 px-4">
 
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+      <div className="bg-white p-5 md:p-6 rounded-xl w-full max-w-md shadow-xl">
 
-      <div className="bg-white p-6 rounded-xl w-[450px] shadow-xl">
-
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="text-xl md:text-2xl font-bold mb-4">
           Edit Task
         </h2>
 
@@ -66,7 +61,9 @@ function EditTaskModal({
           <textarea
             value={description}
             onChange={(e) =>
-              setDescription(e.target.value)
+              setDescription(
+                e.target.value
+              )
             }
             className="border p-3 rounded-lg w-full mb-3"
           />
@@ -78,7 +75,6 @@ function EditTaskModal({
             }
             className="border p-3 rounded-lg w-full mb-4"
           >
-
             <option>
               Pending
             </option>
@@ -90,10 +86,9 @@ function EditTaskModal({
             <option>
               Completed
             </option>
-
           </select>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
 
             <button
               type="submit"
@@ -117,7 +112,6 @@ function EditTaskModal({
       </div>
 
     </div>
-
   );
 }
 
