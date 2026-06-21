@@ -21,75 +21,63 @@ function Profile() {
 
   const [user, setUser] = useState(null);
 
-  const [editMode, setEditMode] =
-    useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
 
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: ""
-    });
+  const [editMode, setEditMode] = useState(false);
 
-  const [totalTasks, setTotalTasks] =
-    useState(0);
-
-  const [completedTasks, setCompletedTasks] =
-    useState(0);
+  const [totalTasks, setTotalTasks] = useState(0);
+  const [completedTasks, setCompletedTasks] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const email =
-          localStorage.getItem("email");
+        const email = localStorage.getItem("email");
 
         if (!email) {
           navigate("/login");
           return;
         }
 
-        // Profile
-        const profileResponse =
-          await api.get(
-            `/auth/profile/${encodeURIComponent(email)}`
-          );
+        // Load Profile
+        const profileResponse = await api.get(
+          `/auth/profile/${encodeURIComponent(email)}`
+        );
 
         setUser(profileResponse.data);
 
         setFormData({
-          name:
-            profileResponse.data.name || "",
-          email:
-            profileResponse.data.email || "",
+          name: profileResponse.data.name,
+          email: profileResponse.data.email,
           password: ""
         });
 
-        // Tasks
-        const tasksResponse =
-          await api.get(
-            `/tasks?email=${encodeURIComponent(email)}`
-          );
-
-        const tasks =
-          tasksResponse.data || [];
-
-        console.log(
-          "Tasks:",
-          tasks
+        // Load Tasks
+        const tasksResponse = await api.get(
+          `/tasks?email=${encodeURIComponent(email)}`
         );
 
-        setTotalTasks(
-          tasks.length
-        );
+        const tasks = tasksResponse.data || [];
+
+        console.log("Tasks:", tasks);
+
+        setTotalTasks(tasks.length);
 
         setCompletedTasks(
-          tasks.filter(
-            task =>
-              task.status &&
-              task.status.toUpperCase() ===
-                "COMPLETED"
-          ).length
+          tasks.filter(task => {
+            const status =
+              task.status?.toLowerCase();
+
+            return (
+              status === "completed" ||
+              status === "done"
+            );
+          }).length
         );
+
       } catch (error) {
         console.error(error);
       }
@@ -106,45 +94,41 @@ function Profile() {
     });
   };
 
-  const handleSave =
-    async () => {
-      try {
-        await api.put(
-          `/auth/profile/${encodeURIComponent(
-            user.email
-          )}`,
-          formData
-        );
+  const handleSave = async () => {
+    try {
+      const response = await api.put(
+        `/auth/profile/${encodeURIComponent(
+          user.email
+        )}`,
+        formData
+      );
 
-        setUser({
-          ...user,
-          name: formData.name,
-          email: formData.email
-        });
+      setUser(response.data);
 
-        localStorage.setItem(
-          "email",
-          formData.email
-        );
+      localStorage.setItem(
+        "name",
+        response.data.name
+      );
 
-        localStorage.setItem(
-          "name",
-          formData.name
-        );
+      localStorage.setItem(
+        "email",
+        response.data.email
+      );
 
-        alert(
-          "Profile Updated Successfully"
-        );
+      alert(
+        "Profile Updated Successfully"
+      );
 
-        setEditMode(false);
-      } catch (error) {
-        console.error(error);
+      setEditMode(false);
 
-        alert(
-          "Failed to Update Profile"
-        );
-      }
-    };
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Failed to Update Profile"
+      );
+    }
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -164,21 +148,25 @@ function Profile() {
 
   return (
     <div className="flex min-h-screen bg-slate-100">
+
       <Sidebar />
 
       <div className="flex-1">
+
         <Navbar />
 
         <div className="p-8">
+
           <h1 className="text-5xl font-bold mb-8">
             My Profile
           </h1>
 
           <div className="grid lg:grid-cols-3 gap-8">
 
-            {/* Left Card */}
+            {/* Avatar Card */}
 
             <div className="bg-white rounded-3xl shadow p-10 flex flex-col items-center">
+
               <div className="w-40 h-40 rounded-full bg-slate-950 text-white flex items-center justify-center text-6xl font-bold mb-6">
                 {user.name
                   ?.substring(0, 2)
@@ -192,38 +180,32 @@ function Profile() {
               <p className="text-gray-500 mt-2">
                 TaskFlow User
               </p>
+
             </div>
 
-            {/* Right Card */}
+            {/* Info Card */}
 
             <div className="lg:col-span-2 bg-white rounded-3xl shadow p-8">
+
               <h2 className="text-3xl font-bold mb-8">
                 Account Information
               </h2>
 
               <div className="grid md:grid-cols-2 gap-6">
 
-                {/* Name */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaUser />
-                    <span>
-                      Full Name
-                    </span>
+                    <span>Full Name</span>
                   </div>
 
                   {editMode ? (
                     <input
                       type="text"
                       name="name"
-                      value={
-                        formData.name
-                      }
-                      onChange={
-                        handleChange
-                      }
-                      className="w-full mt-4 border rounded-lg px-3 py-2"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full mt-4 border rounded-xl px-4 py-2"
                     />
                   ) : (
                     <h3 className="text-2xl font-bold mt-4">
@@ -232,27 +214,19 @@ function Profile() {
                   )}
                 </div>
 
-                {/* Email */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaEnvelope />
-                    <span>
-                      Email
-                    </span>
+                    <span>Email</span>
                   </div>
 
                   {editMode ? (
                     <input
                       type="email"
                       name="email"
-                      value={
-                        formData.email
-                      }
-                      onChange={
-                        handleChange
-                      }
-                      className="w-full mt-4 border rounded-lg px-3 py-2"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full mt-4 border rounded-xl px-4 py-2"
                     />
                   ) : (
                     <h3 className="text-2xl font-bold mt-4">
@@ -261,14 +235,10 @@ function Profile() {
                   )}
                 </div>
 
-                {/* Total Tasks */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaList />
-                    <span>
-                      Total Tasks
-                    </span>
+                    <span>Total Tasks</span>
                   </div>
 
                   <h3 className="text-2xl font-bold mt-4">
@@ -276,14 +246,10 @@ function Profile() {
                   </h3>
                 </div>
 
-                {/* Completed Tasks */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaCheckCircle />
-                    <span>
-                      Completed Tasks
-                    </span>
+                    <span>Completed Tasks</span>
                   </div>
 
                   <h3 className="text-2xl font-bold mt-4 text-green-600">
@@ -291,14 +257,10 @@ function Profile() {
                   </h3>
                 </div>
 
-                {/* Joined */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaCalendarAlt />
-                    <span>
-                      Joined
-                    </span>
+                    <span>Joined</span>
                   </div>
 
                   <h3 className="text-2xl font-bold mt-4">
@@ -306,20 +268,17 @@ function Profile() {
                   </h3>
                 </div>
 
-                {/* Status */}
-
                 <div className="bg-slate-100 rounded-2xl p-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <FaUser />
-                    <span>
-                      Status
-                    </span>
+                    <span>Status</span>
                   </div>
 
                   <h3 className="text-2xl font-bold mt-4 text-green-600">
                     Active
                   </h3>
                 </div>
+
               </div>
 
               <div className="flex gap-4 mt-8">
@@ -335,9 +294,7 @@ function Profile() {
                 ) : (
                   <button
                     onClick={() =>
-                      setEditMode(
-                        true
-                      )
+                      setEditMode(true)
                     }
                     className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
                   >
@@ -347,9 +304,7 @@ function Profile() {
                 )}
 
                 <button
-                  onClick={
-                    handleLogout
-                  }
+                  onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
                 >
                   <FaSignOutAlt />
@@ -357,11 +312,15 @@ function Profile() {
                 </button>
 
               </div>
+
             </div>
 
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 }
