@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {
+  useState,
+  useContext
+} from "react";
+
+import {
+  useNavigate,
+  Link
+} from "react-router-dom";
 
 import api from "../services/api";
-import { useContext } from "react";
 
 import {
   NotificationContext
@@ -10,59 +16,75 @@ import {
 
 function Register() {
 
-  const navigate = useNavigate();
-const {
-  addNotification
-} = useContext(
-  NotificationContext
-);
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: ""
-    });
+  const navigate =
+    useNavigate();
 
-  const handleChange = (e) => {
+  const {
+    addNotification
+  } = useContext(
+    NotificationContext
+  );
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const [
+    formData,
+    setFormData
+  ] = useState({
 
-  };
+    name: "",
+    email: "",
+    password: ""
 
-  const handleSubmit = async (e) => {
+  });
 
-  e.preventDefault();
+  const handleChange =
+    (e) => {
 
-  try {
+      setFormData({
 
-    await api.post(
-      "/auth/register",
-      formData
-    );
+        ...formData,
 
-    addNotification(
-      `Welcome to TaskFlow ${formData.name} 🎉`
-    );
+        [e.target.name]:
+          e.target.value
 
-    alert(
-      "Registration Successful"
-    );
+      });
 
-    navigate("/login");
+    };
 
-  } catch (error) {
+  const handleSubmit =
+    async (e) => {
 
-    console.error(error);
+      e.preventDefault();
 
-    alert(
-      "Registration Failed"
-    );
+      try {
 
-  }
-};
+        await api.post(
+          "/auth/register",
+          formData
+        );
+
+        addNotification(
+          `Welcome to TaskFlow ${formData.name} 🎉`
+        );
+
+        alert(
+          "Registration Successful"
+        );
+
+        navigate(
+          "/login"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Registration Failed"
+        );
+
+      }
+
+    };
 
   return (
 
@@ -75,8 +97,7 @@ const {
         </h1>
 
         <p className="text-xl text-slate-300">
-          Create an account and start
-          managing your tasks like a pro.
+          Create an account and start managing your tasks like a pro.
         </p>
 
       </div>
@@ -94,6 +115,7 @@ const {
           </p>
 
           <form
+            autoComplete="off"
             onSubmit={handleSubmit}
             className="space-y-5"
           >
@@ -101,6 +123,7 @@ const {
             <input
               type="text"
               name="name"
+              autoComplete="name"
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
@@ -111,6 +134,7 @@ const {
             <input
               type="email"
               name="email"
+              autoComplete="off"
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
@@ -121,6 +145,7 @@ const {
             <input
               type="password"
               name="password"
+              autoComplete="new-password"
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}

@@ -24,9 +24,7 @@ function Login() {
     useNavigate();
 
   const { login } =
-    useContext(
-      AuthContext
-    );
+    useContext(AuthContext);
 
   const {
     addNotification
@@ -59,218 +57,129 @@ function Login() {
     };
 
   const handleSubmit =
-  async (e) => {
+    async (e) => {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    try {
+      try {
 
-      const response =
-        await api.post(
-          "/auth/login",
-          formData
+        const response =
+          await api.post(
+            "/auth/login",
+            formData
+          );
+
+        localStorage.setItem(
+          "token",
+          response.data.token
         );
 
-      console.log(
-        response.data
-      );
+        localStorage.setItem(
+          "name",
+          response.data.name
+        );
 
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
+        localStorage.setItem(
+          "email",
+          response.data.email
+        );
 
-      localStorage.setItem(
-        "name",
-        response.data.name
-      );
+        login(
+          response.data.token
+        );
 
-      localStorage.setItem(
-        "email",
-        response.data.email
-      );
+        addNotification(
+          `Welcome back ${response.data.name} 👋`
+        );
 
-      login(
-        response.data.token
-      );
+        navigate(
+          "/dashboard"
+        );
 
-      navigate(
-        "/dashboard"
-      );
+      } catch (error) {
 
-    } catch (error) {
+        console.error(error);
 
-      console.error(error);
+        alert(
+          "Invalid Credentials"
+        );
 
-      alert(
-        "Invalid Credentials"
-      );
+      }
 
-    }
+    };
 
-  };
   return (
 
     <div className="min-h-screen flex">
 
-      <div
-        className="
-          hidden
-          lg:flex
-          w-1/2
-          bg-slate-950
-          text-white
-          flex-col
-          justify-center
-          px-20
-        "
-      >
+      <div className="hidden lg:flex w-1/2 bg-slate-950 text-white flex-col justify-center px-20">
 
-        <h1
-          className="
-            text-6xl
-            font-bold
-            mb-6
-          "
-        >
+        <h1 className="text-6xl font-bold mb-6">
           TaskFlow
         </h1>
 
-        <p
-          className="
-            text-xl
-            text-slate-300
-          "
-        >
-          Manage your tasks
-          efficiently and
-          stay productive.
+        <p className="text-xl text-slate-300">
+          Manage your tasks efficiently and stay productive.
         </p>
 
       </div>
 
-      <div
-        className="
-          flex-1
-          flex
-          justify-center
-          items-center
-          bg-slate-100
-        "
-      >
+      <div className="flex-1 flex justify-center items-center bg-slate-100">
 
-        <div
-          className="
-            bg-white
-            p-10
-            rounded-3xl
-            shadow-xl
-            w-full
-            max-w-md
-          "
-        >
+        <div className="bg-white p-10 rounded-3xl shadow-xl w-full max-w-md">
 
-          <h2
-            className="
-              text-4xl
-              font-bold
-              mb-2
-            "
-          >
+          <h2 className="text-4xl font-bold mb-2">
             Login
           </h2>
 
-          <p
-            className="
-              text-gray-500
-              mb-8
-            "
-          >
+          <p className="text-gray-500 mb-8">
             Sign in to continue
           </p>
 
           <form
-            onSubmit={
-              handleSubmit
-            }
-            className="
-              space-y-5
-            "
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            className="space-y-5"
           >
 
             <input
               type="email"
               name="email"
+              autoComplete="off"
               placeholder="Email"
-              value={
-                formData.email
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.email}
+              onChange={handleChange}
               required
-              className="
-                w-full
-                border
-                rounded-xl
-                px-4
-                py-3
-              "
+              className="w-full border rounded-xl px-4 py-3"
             />
 
             <input
               type="password"
               name="password"
+              autoComplete="new-password"
               placeholder="Password"
-              value={
-                formData.password
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.password}
+              onChange={handleChange}
               required
-              className="
-                w-full
-                border
-                rounded-xl
-                px-4
-                py-3
-              "
+              className="w-full border rounded-xl px-4 py-3"
             />
 
             <button
               type="submit"
-              className="
-                w-full
-                bg-slate-950
-                text-white
-                py-3
-                rounded-xl
-                hover:bg-slate-800
-              "
+              className="w-full bg-slate-950 text-white py-3 rounded-xl hover:bg-slate-800"
             >
               Login
             </button>
 
           </form>
 
-          <p
-            className="
-              mt-6
-              text-center
-              text-gray-600
-            "
-          >
+          <p className="mt-6 text-center text-gray-600">
 
             Don't have an account?
 
             <Link
               to="/register"
-              className="
-                text-blue-600
-                ml-2
-                font-semibold
-              "
+              className="text-blue-600 ml-2 font-semibold"
             >
               Register
             </Link>
