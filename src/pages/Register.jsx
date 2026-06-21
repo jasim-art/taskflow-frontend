@@ -1,3 +1,4 @@
+
 import {
   useState,
   useContext
@@ -90,27 +91,88 @@ function Register() {
 
     <div className="min-h-screen flex">
 
-      <div className="hidden lg:flex w-1/2 bg-slate-950 text-white flex-col justify-center px-20">
+      {/* Left Section */}
 
-        <h1 className="text-6xl font-bold mb-6">
+      <div
+        className="
+          hidden
+          lg:flex
+          w-1/2
+          bg-slate-950
+          text-white
+          flex-col
+          justify-center
+          px-12
+          xl:px-20
+        "
+      >
+
+        <h1
+          className="
+            text-5xl
+            xl:text-6xl
+            font-bold
+            mb-6
+          "
+        >
           TaskFlow
         </h1>
 
-        <p className="text-xl text-slate-300">
-          Create an account and start managing your tasks like a pro.
+        <p
+          className="
+            text-lg
+            xl:text-xl
+            text-slate-300
+          "
+        >
+          Create an account and start
+          managing your tasks like a pro.
         </p>
 
       </div>
 
-      <div className="flex-1 bg-slate-100 flex justify-center items-center">
+      {/* Right Section */}
 
-        <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-10">
+      <div
+        className="
+          flex-1
+          bg-slate-100
+          flex
+          justify-center
+          items-center
+          px-4
+        "
+      >
 
-          <h2 className="text-4xl font-bold mb-2">
+        <div
+          className="
+            bg-white
+            w-full
+            max-w-md
+            rounded-3xl
+            shadow-xl
+            p-6
+            md:p-10
+          "
+        >
+
+          <h2
+            className="
+              text-3xl
+              md:text-4xl
+              font-bold
+              mb-2
+            "
+          >
             Create Account
           </h2>
 
-          <p className="text-gray-500 mb-8">
+          <p
+            className="
+              text-gray-500
+              mb-8
+            "
+          >
             Register to continue
           </p>
 
@@ -128,7 +190,16 @@ function Register() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full border rounded-xl px-4 py-3"
+              className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+                outline-none
+                focus:ring-2
+                focus:ring-slate-900
+              "
             />
 
             <input
@@ -139,7 +210,16 @@ function Register() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full border rounded-xl px-4 py-3"
+              className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+                outline-none
+                focus:ring-2
+                focus:ring-slate-900
+              "
             />
 
             <input
@@ -150,25 +230,52 @@ function Register() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full border rounded-xl px-4 py-3"
+              className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+                outline-none
+                focus:ring-2
+                focus:ring-slate-900
+              "
             />
 
             <button
               type="submit"
-              className="w-full bg-slate-950 text-white py-3 rounded-xl hover:bg-slate-800"
+              className="
+                w-full
+                bg-slate-950
+                text-white
+                py-3
+                rounded-xl
+                hover:bg-slate-800
+                transition
+              "
             >
               Register
             </button>
 
           </form>
 
-          <p className="text-center mt-6 text-gray-600">
+          <p
+            className="
+              text-center
+              mt-6
+              text-gray-600
+            "
+          >
 
             Already have an account?
 
             <Link
               to="/login"
-              className="text-blue-600 ml-2 font-semibold"
+              className="
+                text-blue-600
+                ml-2
+                font-semibold
+              "
             >
               Login
             </Link>
@@ -182,6 +289,7 @@ function Register() {
     </div>
 
   );
+
 }
 
 export default Register;

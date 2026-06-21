@@ -1,3 +1,4 @@
+
 import {
   useEffect,
   useState
@@ -7,8 +8,7 @@ import {
   FaTasks,
   FaCheckCircle,
   FaClock,
-  FaSpinner,
-  FaUser
+  FaSpinner
 } from "react-icons/fa";
 
 import Sidebar from "../components/layout/Sidebar";
@@ -96,9 +96,7 @@ function Dashboard() {
 
       } catch (error) {
 
-        console.error(
-          error
-        );
+        console.error(error);
 
       }
 
@@ -133,7 +131,7 @@ function Dashboard() {
 
   return (
 
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-slate-100 overflow-x-hidden">
 
       <Sidebar />
 
@@ -141,9 +139,16 @@ function Dashboard() {
 
         <Navbar />
 
-        <div className="p-8">
+        <div className="p-4 md:p-8">
 
-          <h1 className="text-5xl font-bold mb-2">
+          <h1
+            className="
+              text-3xl
+              md:text-5xl
+              font-bold
+              mb-2
+            "
+          >
             Dashboard
           </h1>
 
@@ -154,7 +159,16 @@ function Dashboard() {
             👋
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              xl:grid-cols-4
+              gap-6
+              mb-8
+            "
+          >
 
             <div className="bg-white rounded-2xl shadow p-6">
 
@@ -166,7 +180,7 @@ function Dashboard() {
                     Total Tasks
                   </p>
 
-                  <h2 className="text-4xl font-bold mt-2">
+                  <h2 className="text-3xl md:text-4xl font-bold mt-2">
                     {stats.total}
                   </h2>
 
@@ -188,7 +202,7 @@ function Dashboard() {
                     Completed
                   </p>
 
-                  <h2 className="text-4xl font-bold mt-2 text-green-600">
+                  <h2 className="text-3xl md:text-4xl font-bold mt-2 text-green-600">
                     {stats.completed}
                   </h2>
 
@@ -210,7 +224,7 @@ function Dashboard() {
                     Pending
                   </p>
 
-                  <h2 className="text-4xl font-bold mt-2 text-yellow-500">
+                  <h2 className="text-3xl md:text-4xl font-bold mt-2 text-yellow-500">
                     {stats.pending}
                   </h2>
 
@@ -232,7 +246,7 @@ function Dashboard() {
                     In Progress
                   </p>
 
-                  <h2 className="text-4xl font-bold mt-2 text-blue-600">
+                  <h2 className="text-3xl md:text-4xl font-bold mt-2 text-blue-600">
                     {stats.inProgress}
                   </h2>
 
@@ -246,17 +260,36 @@ function Dashboard() {
 
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div
+            className="
+              grid
+              grid-cols-1
+              lg:grid-cols-3
+              gap-6
+            "
+          >
 
             <div className="bg-white rounded-2xl shadow p-6">
 
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-xl md:text-2xl font-bold mb-4">
                 User Profile
               </h2>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
 
-                <div className="w-16 h-16 rounded-full bg-slate-950 text-white flex items-center justify-center text-2xl">
+                <div
+                  className="
+                    w-16
+                    h-16
+                    rounded-full
+                    bg-slate-950
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                  "
+                >
 
                   {userName
                     ?.substring(0, 2)
@@ -282,7 +315,7 @@ function Dashboard() {
 
             <div className="bg-white rounded-2xl shadow p-6">
 
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-xl md:text-2xl font-bold mb-4">
                 Upcoming Deadlines
               </h2>
 
@@ -323,7 +356,7 @@ function Dashboard() {
 
             <div className="bg-white rounded-2xl shadow p-6">
 
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-xl md:text-2xl font-bold mb-4">
                 Recent Tasks
               </h2>
 
@@ -364,3 +397,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
