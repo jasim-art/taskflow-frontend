@@ -80,6 +80,14 @@ function Analytics() {
   }
 
 };
+const completionRate =
+  stats.total === 0
+    ? 0
+    : Math.round(
+        (stats.completed /
+          stats.total) *
+          100
+      );
   return (
 
     <div className="flex min-h-screen bg-slate-100">
