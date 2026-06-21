@@ -7,7 +7,9 @@ import {
   FaCalendarAlt,
   FaCheckCircle,
   FaList,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaEdit,
+  FaSave
 } from "react-icons/fa";
 
 import Sidebar from "../components/layout/Sidebar";
@@ -20,6 +22,15 @@ function Profile() {
 
   const [user, setUser] = useState(null);
 
+  const [editing, setEditing] =
+    useState(false);
+
+  const [formData, setFormData] =
+    useState({
+      name: "",
+      email: ""
+    });
+
   useEffect(() => {
 
     const loadProfile = async () => {
@@ -27,9 +38,12 @@ function Profile() {
       try {
 
         const email =
-          localStorage.getItem("email");
+          localStorage.getItem(
+            "email"
+          );
 
         if (!email) {
+
           navigate("/login");
           return;
         }
@@ -40,6 +54,11 @@ function Profile() {
           );
 
         setUser(response.data);
+
+        setFormData({
+          name: response.data.name,
+          email: response.data.email
+        });
 
       } catch (error) {
 
@@ -56,26 +75,95 @@ function Profile() {
 
   }, [navigate]);
 
+  const handleChange = (e) => {
+
+    setFormData({
+
+      ...formData,
+
+      [e.target.name]:
+        e.target.value
+
+    });
+
+  };
+
+  const handleSave = async () => {
+
+    try {
+
+      const response =
+        await api.put(
+          `/auth/profile/${user.email}`,
+          formData
+        );
+
+      setUser(
+        response.data
+      );
+
+      localStorage.setItem(
+        "email",
+        response.data.email
+      );
+
+      localStorage.setItem(
+        "name",
+        response.data.name
+      );
+
+      setEditing(false);
+
+      alert(
+        "Profile Updated Successfully"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Failed to Update Profile"
+      );
+
+    }
+
+  };
+
   const handleLogout = () => {
 
     localStorage.clear();
 
     navigate("/login");
+
   };
 
   if (!user) {
 
     return (
 
-      <div className="flex justify-center items-center h-screen">
+      <div
+        className="
+          flex
+          justify-center
+          items-center
+          h-screen
+        "
+      >
 
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+          "
+        >
           Loading...
         </h1>
 
       </div>
 
     );
+
   }
 
   return (
@@ -90,13 +178,25 @@ function Profile() {
 
         <div className="p-8">
 
-          <h1 className="text-5xl font-bold mb-8">
+          <h1
+            className="
+              text-5xl
+              font-bold
+              mb-8
+            "
+          >
             My Profile
           </h1>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div
+            className="
+              grid
+              lg:grid-cols-3
+              gap-8
+            "
+          >
 
-            {/* Profile Card */}
+            {/* Avatar Card */}
 
             <div
               className="
@@ -126,7 +226,7 @@ function Profile() {
                 "
               >
 
-                {user.name
+                {formData.name
                   ?.substring(0, 2)
                   .toUpperCase()}
 
@@ -138,7 +238,7 @@ function Profile() {
                   font-bold
                 "
               >
-                {user.name}
+                {formData.name}
               </h2>
 
               <p
@@ -152,7 +252,7 @@ function Profile() {
 
             </div>
 
-            {/* Details */}
+            {/* Information Card */}
 
             <div
               className="
@@ -201,18 +301,42 @@ function Profile() {
                     "
                   >
                     <FaUser />
-                    <span>Full Name</span>
+                    <span>
+                      Full Name
+                    </span>
                   </div>
 
-                  <h3
-                    className="
-                      text-2xl
-                      font-bold
-                      mt-4
-                    "
-                  >
-                    {user.name}
-                  </h3>
+                  {
+                    editing ? (
+
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="
+                          w-full
+                          mt-4
+                          p-3
+                          border
+                          rounded-xl
+                        "
+                      />
+
+                    ) : (
+
+                      <h3
+                        className="
+                          text-2xl
+                          font-bold
+                          mt-4
+                        "
+                      >
+                        {user.name}
+                      </h3>
+
+                    )
+                  }
 
                 </div>
 
@@ -235,23 +359,47 @@ function Profile() {
                     "
                   >
                     <FaEnvelope />
-                    <span>Email</span>
+                    <span>
+                      Email
+                    </span>
                   </div>
 
-                  <h3
-                    className="
-                      text-xl
-                      font-bold
-                      mt-4
-                      break-all
-                    "
-                  >
-                    {user.email}
-                  </h3>
+                  {
+                    editing ? (
+
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="
+                          w-full
+                          mt-4
+                          p-3
+                          border
+                          rounded-xl
+                        "
+                      />
+
+                    ) : (
+
+                      <h3
+                        className="
+                          text-xl
+                          font-bold
+                          mt-4
+                          break-all
+                        "
+                      >
+                        {user.email}
+                      </h3>
+
+                    )
+                  }
 
                 </div>
 
-                {/* Total Tasks */}
+                {/* Tasks */}
 
                 <div
                   className="
@@ -270,7 +418,9 @@ function Profile() {
                     "
                   >
                     <FaList />
-                    <span>Total Tasks</span>
+                    <span>
+                      Total Tasks
+                    </span>
                   </div>
 
                   <h3
@@ -304,7 +454,9 @@ function Profile() {
                     "
                   >
                     <FaCheckCircle />
-                    <span>Completed Tasks</span>
+                    <span>
+                      Completed Tasks
+                    </span>
                   </div>
 
                   <h3
@@ -339,7 +491,9 @@ function Profile() {
                     "
                   >
                     <FaCalendarAlt />
-                    <span>Joined</span>
+                    <span>
+                      Joined
+                    </span>
                   </div>
 
                   <h3
@@ -373,7 +527,9 @@ function Profile() {
                     "
                   >
                     <FaUser />
-                    <span>Status</span>
+                    <span>
+                      Status
+                    </span>
                   </div>
 
                   <h3
@@ -391,27 +547,88 @@ function Profile() {
 
               </div>
 
-              <button
-                onClick={handleLogout}
+              <div
                 className="
-                  mt-8
-                  bg-red-500
-                  hover:bg-red-600
-                  text-white
-                  px-6
-                  py-3
-                  rounded-xl
                   flex
-                  items-center
-                  gap-2
+                  gap-4
+                  mt-8
                 "
               >
 
-                <FaSignOutAlt />
+                {
+                  editing ? (
 
-                Logout
+                    <button
+                      onClick={handleSave}
+                      className="
+                        bg-green-500
+                        hover:bg-green-600
+                        text-white
+                        px-6
+                        py-3
+                        rounded-xl
+                        flex
+                        items-center
+                        gap-2
+                      "
+                    >
 
-              </button>
+                      <FaSave />
+
+                      Save Changes
+
+                    </button>
+
+                  ) : (
+
+                    <button
+                      onClick={() =>
+                        setEditing(true)
+                      }
+                      className="
+                        bg-blue-500
+                        hover:bg-blue-600
+                        text-white
+                        px-6
+                        py-3
+                        rounded-xl
+                        flex
+                        items-center
+                        gap-2
+                      "
+                    >
+
+                      <FaEdit />
+
+                      Edit Profile
+
+                    </button>
+
+                  )
+                }
+
+                <button
+                  onClick={handleLogout}
+                  className="
+                    bg-red-500
+                    hover:bg-red-600
+                    text-white
+                    px-6
+                    py-3
+                    rounded-xl
+                    flex
+                    items-center
+                    gap-2
+                  "
+                >
+
+                  <FaSignOutAlt />
+
+                  Logout
+
+                </button>
+
+              </div>
 
             </div>
 
